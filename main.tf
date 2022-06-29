@@ -18,7 +18,10 @@ locals {
 resource "aws_iam_openid_connect_provider" "bitbucket" {
   url             = local.url
   client_id_list  = [local.audience]
-  thumbprint_list = [data.tls_certificate.bitbucket.certificates[0].sha1_fingerprint]
+  thumbprint_list = [
+    for cert in data.tls_certificate.bitbucket.certificates :
+    cert.sha1_fingerprint
+  ]
 }
 
 data "aws_iam_policy_document" "assume_role_with_webid" {
