@@ -8,7 +8,7 @@ data "http" "workspace" {
 }
 
 locals {
-  workspace      = jsondecode(data.http.workspace.body)
+  workspace      = jsondecode(data.http.workspace.response_body)
   workspace_uuid = trim(local.workspace.uuid, "}{")
   audience       = "ari:cloud:bitbucket::workspace/${local.workspace_uuid}"
   url            = "${var.api_url}/workspaces/${local.workspace.slug}/pipelines-config/identity/oidc"
